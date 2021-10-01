@@ -1,7 +1,6 @@
-### library
+# coding=utf-8
+# ### library
 
-
-```
 import os
 import numpy as np
 import pandas as pd
@@ -13,21 +12,17 @@ import torch
 from pytorch_transformers import BertTokenizer, BertForSequenceClassification, BertConfig
 from run_classifier_ import *
 from sklearn.model_selection import train_test_split
-```
-
-### dataset
 
 
-```
+# ### dataset
+
 data_path_1 = './dataset'
 data_path_2 = './en_data'
 data_path_3 = './ppr_data'
-```
 
-### config
+# ### config
 
-
-```
+# +
 bert_model = 'bert-base-multilingual-cased'
 batch_size = 32
 num_train_epochs = 5
@@ -39,12 +34,12 @@ max_seq_length = 128
 output_dir = './output'
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-```
-
-### model_class
 
 
-```
+# -
+
+# ### model_class
+
 class bert_model:
     def __init__(path_, bert_model_, batch_size_, num_train_epochs_, learning_rate_, 
                  max_seq_length_, warmup_proportion_, output_dir_, device_):
@@ -219,12 +214,10 @@ class bert_model:
                 break
 
         return model
-```
-
-### EarlyStopping
 
 
-```
+# ### EarlyStopping
+
 class EarlyStopping:
     def __init__(self, patience=2, verbose=False, delta=0, path='./output'):
         """
@@ -278,12 +271,10 @@ class EarlyStopping:
         output_config_file = os.path.join(output_dir, CONFIG_NAME)
         with open(output_config_file, 'w') as f:
             f.write(model_to_save.config.to_json_string())
-```
-
-### load_model
 
 
-```
+# ### load_model
+
 def load_model(dir_):
     # Load a trained model and config that you have fine-tuned
     config = BertConfig(output_config_file)
@@ -294,12 +285,11 @@ def load_model(dir_):
         model = torch.nn.DataParallel(model)
         
     return model
-```
-
-### inference_testset
 
 
-```
+# ### inference_testset
+
+# +
 def get_testdata(path_):
     train_path = os.path.join(path_, 'train/train.csv')
     test_path = os.path.join(path_, 'test/test.csv')
@@ -363,36 +353,21 @@ def predict(mo_path, data_path, bert_model, max_seq_length = 128, eval_batch_siz
 
 
     return res, label_list
-```
+# -
 
-### average_ensemble
+# ### average_ensemble
 
-
-```
 logit_1, label_list = predict(model_path_1, data_path_1, 'bert-base-multilingual-cased', max_seq_length = 128, eval_batch_size=32)
 logit_2, _ = predict(model_path_2, data_path_2, 'bert-base-multilingual-cased', max_seq_length = 128, eval_batch_size=32)
-```
 
-
-```
 res = (logit_1 + logit_2)/2
-```
 
-
-```
 cat_map = {idx:lab for idx, lab in enumerate(label_list)}
 res = [cat_map[c] for c  in res]
-```
 
-
-```
 sub_ = pd.read_csv(sub_path)
 sub_['conv_num'] = test_['conv_num']
 sub_['intent'] = res
 sub_
-```
 
-
-```
 sub_.to_csv('result_.csv',index=False)
-```
