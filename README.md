@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split
 ```
 
 ### dataset
-
+- preprocessed data path
 
 ```
 data_path_1 = './dataset'
@@ -25,7 +25,7 @@ data_path_3 = './ppr_data'
 ```
 
 ### config
-
+- config_setting
 
 ```
 bert_model = 'bert-base-multilingual-cased'
@@ -42,7 +42,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 ```
 
 ### model_class
-
+- get config from init, and train_model
+- data path, model_name, batch_size, epochs, learning_rate, max_seq_length, optimizer_config, saved_path, device(gpu) 
 
 ```
 class bert_model:
@@ -222,7 +223,7 @@ class bert_model:
 ```
 
 ### EarlyStopping
-
+- earlyStopping during training when validation loss doesn't lower than before 
 
 ```
 class EarlyStopping:
@@ -281,7 +282,7 @@ class EarlyStopping:
 ```
 
 ### load_model
-
+- load pretrained model 
 
 ```
 def load_model(dir_):
@@ -297,7 +298,7 @@ def load_model(dir_):
 ```
 
 ### inference_testset
-
+- get inference result from each data (data path)
 
 ```
 def get_testdata(path_):
@@ -366,7 +367,8 @@ def predict(mo_path, data_path, bert_model, max_seq_length = 128, eval_batch_siz
 ```
 
 ### average_ensemble
-
+- get average_ensemble result using loaded model
+- save result to csv file
 
 ```
 logit_1, label_list = predict(model_path_1, data_path_1, 'bert-base-multilingual-cased', max_seq_length = 128, eval_batch_size=32)
