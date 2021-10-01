@@ -1,3 +1,8 @@
+지난 2021년 9월에 진행되었던\
+`판교 ai_camp 대회`\
+자연어처리 분야의 3등을 기록한 학습 소스코드
+
+
 ### library
     - import library needed
     - 필요 라이브러리 import
